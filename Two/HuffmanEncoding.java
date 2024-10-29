@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
@@ -18,7 +20,7 @@ class Node implements Comparable<Node> {
     }
 }
 
-public class HuffmanEncoding {
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -57,18 +59,18 @@ public class HuffmanEncoding {
         }
 
         Node root = priorityQueue.poll();
-        StringBuilder[] codes = new StringBuilder[input.length()];
+        Map<Character, String> codes = new HashMap<>();
         assignCodes(root, "", codes);
 
-        System.out.println("Character\tFrequency\tCode \n ===================================================");
+        System.out.println("Character\tFrequency\tCode \n===================================================");
         for (int i = 0; i < input.length(); i++) {
-            System.out.println(input.charAt(i) + "\t" + frequencies[i] + "\t" + codes[i]);
+            System.out.println(input.charAt(i) + "      \t\t" + frequencies[i] + "\t\t" + codes.get(input.charAt(i)));
         }
 
         int originalSize = input.length() * 8;
         int compressedSize = 0;
         for (int i = 0; i < input.length(); i++) {
-            compressedSize += codes[i].length();
+            compressedSize += codes.get(input.charAt(i)).length();
         }
 
         System.out.println("\nOriginal size (bits): " + originalSize);
@@ -76,22 +78,22 @@ public class HuffmanEncoding {
 
         StringBuilder encodedMessage = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
-            encodedMessage.append(codes[i]);
+            encodedMessage.append(codes.get(input.charAt(i)));
         }
 
         System.out.println("Encoded message: " + encodedMessage);
     }
 
-    public static void assignCodes(Node node, String code, StringBuilder[] codes) {
+    public static void assignCodes(Node node, String code, Map<Character, String> codes) {
         if (node == null) {
             return;
         }
 
         if (node.character != '\0') {
-            codes[node.character - 'a'] = new StringBuilder(code);
+            codes.put(node.character, code);
         }
 
         assignCodes(node.left, code + "0", codes);
         assignCodes(node.right, code + "1", codes);
     }
-}   
+}
