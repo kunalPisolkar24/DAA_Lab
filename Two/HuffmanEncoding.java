@@ -67,11 +67,14 @@ public class Main {
             System.out.println(input.charAt(i) + "      \t\t" + frequencies[i] + "\t\t" + codes.get(input.charAt(i)));
         }
 
-        int originalSize = input.length() * 8;
+        int originalSize = ;
         int compressedSize = 0;
         for (int i = 0; i < input.length(); i++) {
-            compressedSize += codes.get(input.charAt(i)).length();
+            originalSize += frequencies[i];
+            compressedSize += codes.get(input.charAt(i)).length() * frequencies[i];
         }
+
+        originalSize *= 8;
 
         System.out.println("\nOriginal size (bits): " + originalSize);
         System.out.println("Compressed size (bits): " + compressedSize);
